@@ -1,0 +1,29 @@
+version:  "3.9"
+
+services:
+  customer-microservice:
+    image: "customer-microservice:latest"
+    build:
+      context: .
+    container_name: customer-microservice
+    depends_on:
+      - mongodb
+    environment:
+      - spring.cloud.config.uri=http://config-service:8888
+      - spring.data.mongodb.uri=mongodb://mongodb:27017/customers
+      - server.port=50000
+      - eureka.client.service-url.defaultZone=http://discovery-service:8761/eureka/
+    ports:
+      - "50000:50000"
+    networks:
+      - mired
+  mongodb:
+    image: "mongo:latest"
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    networks:
+      - mired
+networks:
+  mired:
+    external: true
