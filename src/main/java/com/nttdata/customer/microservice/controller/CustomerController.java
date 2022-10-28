@@ -31,7 +31,7 @@ public class CustomerController implements CustomerApi{
     @Override
     public Mono<ResponseEntity<Map<String, Object>>> addCustomer(Mono<Customer> customer, ServerWebExchange exchange) {
         Map<String, Object> response = new HashMap<>();
-        return customerService.save(customer.map(customerMapper::toDomain))
+        return customerService.save(customer.map(customerMapper::toDocument))
                 .map(customerMapper::toModel)
                 .map(c -> {
                     response.put("customer", c);
@@ -68,7 +68,7 @@ public class CustomerController implements CustomerApi{
     @Override
     public Mono<ResponseEntity<Map<String, Object>>> updateCustomer(String id, Mono<Customer> customer, ServerWebExchange exchange) {
         Map<String, Object> response = new HashMap<>();
-        return customerService.update(id, customer.map(customerMapper::toDomain))
+        return customerService.update(id, customer.map(customerMapper::toDocument))
                 .map(customerMapper::toModel)
                 .map(c -> {
                     response.put("customer", c);

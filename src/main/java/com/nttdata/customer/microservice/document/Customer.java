@@ -1,14 +1,13 @@
-package com.nttdata.customer.microservice.domain;
+package com.nttdata.customer.microservice.document;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.Date;
 
-import java.math.BigDecimal;
-@Data
 @Getter
 @Setter
 @Document(collection = "customer")
@@ -22,6 +21,7 @@ public class Customer {
     @Indexed(unique = true)
     private String email;
     private String phone;
-    private String afp;
-    private BigDecimal amountAvailable;
+    private String employer;
+    @CreatedDate
+    private Date createdAt;
 }

@@ -1,6 +1,6 @@
 package com.nttdata.customer.microservice.service;
 
-import com.nttdata.customer.microservice.domain.Customer;
+import com.nttdata.customer.microservice.document.Customer;
 import com.nttdata.customer.microservice.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

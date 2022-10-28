@@ -172,7 +172,6 @@ components:
         - surnames
         - email
         - phone
-        - afp
       type: object
       properties:
         id:
@@ -204,16 +203,15 @@ components:
           description: phone
           pattern: '(\+51|51|)[0-9]+'
           example: "+51940000000"
-        afp:
+        employer:
           type: string
-          description: AFPs
-          example: HABITAT
-        amountAvailable:
-          type: number
-          format: currency
-          description: amount available
-          example: 1000.00
-          default: 0.00
+          description: employer
+          example: NTTDATA
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date
+          example: "2022-10-27T20:30:00Z"
       xml:
         name: customer
   requestBodies:

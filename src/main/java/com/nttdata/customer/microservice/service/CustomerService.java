@@ -1,6 +1,6 @@
 package com.nttdata.customer.microservice.service;
 
-import com.nttdata.customer.microservice.domain.Customer;
+import com.nttdata.customer.microservice.document.Customer;
 import reactor.core.publisher.Mono;
 
 public interface CustomerService {
