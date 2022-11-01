@@ -176,6 +176,7 @@ components:
       properties:
         id:
           type: string
+          readOnly: true
         dni:
           type: string
           description: DNI
@@ -212,6 +213,7 @@ components:
           format: date-time
           description: Creation date
           example: "2022-10-27T20:30:00Z"
+          readOnly: true
       xml:
         name: customer
   requestBodies:
