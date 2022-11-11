@@ -5,6 +5,7 @@ import com.nttdata.customer.microservice.mapper.CustomerMapper;
 import com.nttdata.customer.microservice.model.Customer;
 import com.nttdata.customer.microservice.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,9 @@ public class CustomerController implements CustomerApi{
                     response.put("message", "Cliente guardado con éxito");
                     response.put(TIMESTAMP, new Date());
                     return ResponseEntity.status(HttpStatus.CREATED).body(response);
-                }).onErrorResume(getThrowableMonoFunction(response));
+                })
+                .onErrorResume(WebExchangeBindException.class, getThrowableMonoFunction(response))
+                .onErrorResume(DuplicateKeyException.class, getThrowableDuplicate(response));
     }
 
     @Override
@@ -76,7 +79,8 @@ public class CustomerController implements CustomerApi{
                     response.put(TIMESTAMP, new Date());
                     return ResponseEntity.status(HttpStatus.OK).body(response);
                 })
-                .onErrorResume(getThrowableMonoFunction(response))
+                .onErrorResume(WebExchangeBindException.class, getThrowableMonoFunction(response))
+                .onErrorResume(DuplicateKeyException.class, getThrowableDuplicate(response))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
@@ -90,6 +94,15 @@ public class CustomerController implements CustomerApi{
                     response.put(TIMESTAMP, new Date());
                     response.put("status", HttpStatus.BAD_REQUEST.value());
                     response.put("errors", l);
+                    return Mono.just(ResponseEntity.badRequest().body(response));
+                });
+    }
+    private static Function<Throwable, Mono<? extends ResponseEntity<Map<String, Object>>>> getThrowableDuplicate(Map<String, Object> response){
+        return t -> Mono.just(t).cast(DuplicateKeyException.class)
+                .flatMap(l -> {
+                    response.put(TIMESTAMP, new Date());
+                    response.put("status", HttpStatus.BAD_REQUEST.value());
+                    response.put("errors", l.getMessage());
                     return Mono.just(ResponseEntity.badRequest().body(response));
                 });
     }
